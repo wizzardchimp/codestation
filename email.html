@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aspen Mail Login</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and general layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #1a202c;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+        }
+
+        .left-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .right-side {
+            flex: 1;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9Ijc2OCIgdmlld0JveD0iMCAwIDUwMCA3NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNzY4IiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMTc3XzIpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMTc3XzIiIHgxPSIwIiB5MT0iMCIgeDI9IjUwMCIgeTI9Ijc2OCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjNiM2VkIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzJkMzc0OCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            z-index: 20;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .support {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 20;
+        }
+
+        .support img {
+            height: 40px;
+            width: auto;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 3rem 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #2d3748;
+            border-radius: 0.75rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #a0aec0;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.025em;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #63b3ed, #4299e1);
+            color: #ffffff;
+            border: none;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+        }
+
+        .btn-secondary {
+            background-color: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+        #mfa-section {
+            display: none;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #63b3ed;
+            margin: 2rem 0;
+            text-shadow: 0 0 10px rgba(99, 179, 237, 0.3);
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .brand-logo {
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #63b3ed;
+            text-shadow: 0 0 15px rgba(99, 179, 237, 0.3);
+        }
+
+        h2 {
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .right-side {
+                display: none;
+            }
+            
+            .left-side {
+                flex: none;
+                height: 100vh;
+            }
+            
+            .logo, .support {
+                position: relative;
+                top: auto;
+                left: auto;
+                bottom: auto;
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo positioned top left -->
+    <div class="logo">
+        <img src="logo.png" alt="Aspen Mail Logo">
+    </div>
+
+    <!-- Support positioned bottom left -->
+    <div class="support">
+        <img src="support.png" alt="Support">
+    </div>
+
+    <div class="main-container">
+        <!-- Left side with login form -->
+        <div class="left-side">
+            <div class="login-container">
+                <div class="brand-logo">Welcome</div>
+
+                <!-- Login Section -->
+                <div id="login-section">
+                    <h2 class="login-title">Sign in to your account</h2>
+                    <form id="login-form">
+                        <input type="text" id="username" placeholder="marcus.gibson@autostore.co.uk" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="submit" class="btn-primary">Log In</button>
+                        <button type="button" id="cancel-login-btn" class="btn-secondary">Cancel</button>
+                    </form>
+                </div>
+
+                <!-- MFA Section -->
+                <div id="mfa-section">
+                    <h2 class="login-title">Verify Your Login</h2>
+                    <p class="message">
+                        A verification request has been sent to your registered device.
+                        Please open your email on <span class="font-bold text-blue-500">'Marcus iPhone'</span>
+                        and approve the login within the next 60 seconds.
+                    </p>
+                    <div class="timer-display" id="timer">00:60</div>
+                    <p id="timer-message" class="text-red-500 font-medium"></p>
+                    <button id="resend-mfa" class="btn-secondary" style="margin-bottom: 1rem;">Resend Verification</button>
+                    <button type="button" id="cancel-mfa-btn" class="btn-secondary">Cancel Login</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side with main background image -->
+        <div class="right-side">
+            <img src="main.png" alt="Main Background" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
+
+    <script>
+        const loginSection = document.getElementById('login-section');
+        const mfaSection = document.getElementById('mfa-section');
+        const loginForm = document.getElementById('login-form');
+        const timerDisplay = document.getElementById('timer');
+        const timerMessage = document.getElementById('timer-message');
+        const resendMfaButton = document.getElementById('resend-mfa');
+        const cancelLoginBtn = document.getElementById('cancel-login-btn');
+        const cancelMfaBtn = document.getElementById('cancel-mfa-btn');
+
+        let countdownInterval;
+        const initialTime = 60; // seconds
+        let timeLeft = initialTime;
+
+        // Function to start the countdown timer
+        function startCountdown() {
+            timeLeft = initialTime; // Reset time
+            timerMessage.textContent = ''; // Clear any previous messages
+            resendMfaButton.style.display = 'none'; // Hide resend button initially
+
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent =
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    timerMessage.textContent = 'Time expired. Redirecting...';
+                    resendMfaButton.style.display = 'block'; // Show resend button (though it will redirect)
+                    // Automatically redirect when timer expires
+                    window.location.href = '../mypc/mypc.html';
+                }
+            }, 1000);
+        }
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            loginSection.style.display = 'none'; // Hide login section
+            mfaSection.style.display = 'block'; // Show MFA section
+            startCountdown(); // Start the timer
+        });
+
+        // Handle cancel button click (from login section)
+        cancelLoginBtn.addEventListener('click', () => {
+            window.location.href = '../mypc/mypc.html'; // Redirect to mypc.html
+        });
+
+        // Handle resend MFA button click
+        resendMfaButton.addEventListener('click', () => {
+            clearInterval(countdownInterval); // Clear any existing interval
+            startCountdown(); // Restart the timer
+        });
+
+        // Handle cancel button click (from MFA section)
+        cancelMfaBtn.addEventListener('click', () => {
+            clearInterval(countdownInterval); // Stop the timer if running
+            window.location.href = '../mypc/mypc.html'; // Redirect to mypc.html
+        });
+    </script>
+</body>
+</html>
